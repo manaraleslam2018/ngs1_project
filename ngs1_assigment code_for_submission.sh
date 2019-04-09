@@ -55,6 +55,19 @@ Mild Trimming for SX_1. {unshuffled}
 mkdir ~/ngs_assigment/trimmed && cd ~/ngs_assigment/trimmed 
 for r in 1 2 3 4 5;do >f1="/home/manar/ngs_assigment/sample_r1.fastq.gz.split/sample_r1.part_00${r}.fastq.gz"; >f2="/home/manar/ngs_assigment/sample_r2.fastq.gz.split/sample_r2.part_00${r}.fastq.gz"; >newf1="/home/manar/ngs_assigment/sample_r1.fastq.gz.split/sample_r1.part_00${r}.pe.trim.fastq.gz"; >newf2="/home/manar/ngs_assigment/sample_r2.fastq.gz.split/sample_r2.part_00${r}.pe.trim.fastq.gz"; >newf1U="/home/manar/ngs_assigment/sample_r1.fastq.gz.split/sample_r1.part_00${r}.se.trim.fastq.gz"; >newf2U="/home/manar/ngs_assigment/sample_r2.fastq.gz.split/sample_r2.part_00${r}.se.trim.fastq.gz"; >adap="/home/manar/anaconda3/envs/ngs1/share/trimmomatic-0.39-0/adapters"; trimmomatic PE -threads 1 -phred33 -trimlog trimLogFile -summary statsSummaryFile  $f1 $f2 $newf1 $newf1U $newf2 $newf2U ILLUMINACLIP:$adap/TruSeq3-PE.fa:2:30:10:1 SLIDINGWINDOW:4:10 MINLEN:36;done
 
+Agrissive Trimming for SX_2. {shuffled}
+
+mkdir ~/ngs_assigment/shuffled_trimmed && cd ~/ngs_assigment/shuffled_trimmed 
+for r in 1 2 3 4 5;do 
+f1="/home/manar/ngs_assigment/shuffled_sample_r1.fastq.gz.split/shuffled_sample_r1.part_00${r}.fastq.gz"; 
+f2="/home/manar/ngs_assigment/shuffled_sample_r2.fastq.gz.split/shuffled_sample_r2.part_00${r}.fastq.gz"; 
+newf1="/home/manar/ngs_assigment/shuffled_sample_r1.fastq.gz.split/shuffled_sample_r1.part_00${r}.pe.trim.fastq.gz"; 
+newf2="/home/manar/ngs_assigment/shuffled_sample_r2.fastq.gz.split/shuffled_sample_r2.part_00${r}.pe.trim.fastq.gz";
+newf1U="/home/manar/ngs_assigment/shuffled_sample_r1.fastq.gz.split/shuffled_sample_r1.part_00${r}.se.trim.fastq.gz"; 
+newf2U="/home/manar/ngs_assigment/shuffled_sample_r2.fastq.gz.split/shuffled_sample_r2.part_00${r}.se.trim.fastq.gz"; 
+adap="/home/manar/anaconda3/envs/ngs1/share/trimmomatic-0.39-0/adapters";
+trimmomatic PE -threads 1 -phred33 -trimlog trimLogFile -summary statsSummaryFile  $f1 $f2 $newf1 $newf1U $newf2 $newf2U ILLUMINACLIP:$adap/TruSeq3-PE.fa:2:30:10:1 SLIDINGWINDOW:4:30 MINLEN:36;
+done
 
 5- Alignment by BWA for unshuffled data
 5a): Download reference
