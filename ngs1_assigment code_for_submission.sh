@@ -117,7 +117,36 @@ do
     samtools flagstat /home/manar/ngs_assigment/bwa_align/sample_part_001.sam/sample_part_00${r}.sam > sample_part_00${r}_stats.out
 done
 
+6) HISAT allignment 
 
+6A) installhisat2
+conda install -c bioconda hisat2 
+
+6B) index your genome
+mkdir -p ~/ngs_assigment/hisat_align/hisatIndex && cd ~/ngs_assigment/hisat_align/hisatIndex
+ln -s ~/ngs_assigment/sample_data/gencode.v29.pc_transcripts.chr22.simplified.fa .
+ln -s ~/ngs_assigment/sample_data/gencode.v29.annotation.gtf .
+
+hisat2_extract_splice_sites.py ~/ngs_assigment/sample_data/gencode.v29.annotation.gtf > splicesites.tsv
+hisat2_extract_exons.py ~/ngs_assigment/sample_data/gencode.v29.annotation.gtf > exons.tsv
+hisat2-build -p 1 --ss splicesites.tsv --exon exons.tsv gencode.v29.pc_transcripts.chr22.simplified.fa gencode.v29.pc_transcripts.chr22.simplified_indexed
+
+
+6C) sequence alignment
+
+cd ~/ngs_assigment/hisat_align
+
+for r in 1 2 3 4 5
+do
+R1="/home/manar/ngs_assigment/shuffled_sample_r1.fastq.gz.split/shuffled_sample_r1.part_00${r}.pe.trim.fastq.gz"
+R2="/home/manar/ngs_assigment/shuffled_sample_r2.fastq.gz.split/shuffled_sample_r2.part_00${r}.pe.trim.fastq.gz"
+hisat2 -p 1 -x hisatIndex/gencode.v29.pc_transcripts.chr22.simplified_indexed --dta --rna-strandness RF -1 $R1 -2 $R2 -S shuffeled_hisat_aligment${r}.sam
+done
+
+for r in 1 2 3 4 5
+do
+    samtools flagstat /home/manar/ngs_assigment/hisat_align/shuffeled_hisat_aligment${r}.sam > sample_part_00${r}_stats.out
+done
 
 
 
