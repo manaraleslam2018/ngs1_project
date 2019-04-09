@@ -104,17 +104,18 @@ bwa index -a bwtsw gencode.v29.pc_transcripts.chr22.simplified.fa
 
 5D) sequence alignment
 cd ~/ngs_assigment/bwa_align/
+
 for r in 1 2 3 4 5
 
     do
-    R1="/home/manar/ngs_assigment/sample_r1.fastq.gz.split/sample_r1.part_00${r}.fastq.gz"
-    R2="/home/manar/ngs_assigment/sample_r2.fastq.gz.split/sample_r2.part_00${r}.fastq.gz"
+    R1="/home/manar/ngs_assigment/sample_r1.fastq.gz.split/sample_r1.part_00${r}.pe.trim.fastq.gz"
+    R2="/home/manar/ngs_assigment/sample_r2.fastq.gz.split/sample_r2.part_00${r}.pe.trim.fastq.gz"
     /usr/bin/time -v bwa mem bwaIndex/gencode.v29.pc_transcripts.chr22.simplified.fa $R1 $R2 >sample_part_00${r}.sam
     done
 
 for r in 1 2 3 4 5
 do
-    samtools flagstat /home/manar/ngs_assigment/bwa_align/sample_part_001.sam/sample_part_00${r}.sam > sample_part_00${r}_stats.out
+    samtools flagstat /home/manar/ngs_assigment/bwa_align/sample_part_00${r}.sam > sample_part_00${r}_stats.out
 done
 
 6) HISAT allignment 
