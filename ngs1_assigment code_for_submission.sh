@@ -209,3 +209,13 @@ do
  gffcompare -r /home/manar/ngs_assigment/sample_data/gencode.v29.annotation.gtf -o /home/manar/ngs_assigment/gtf-compare/hisat_gtf_compar/hisat_aligment_assembly_gtf_compar${r} /home/manar/ngs_assigment/hisat_aligment_assembly/hisat_aligment_assembly${r}.gtf
 done
 '''
+
+gff compare bwa aligment
+'''
+mkdir bwa_gtf_compar
+
+for r in 1 2 3 4 5
+do
+ gffcompare -r /home/manar/ngs_assigment/sample_data/gencode.v29.annotation.gtf -o /home/manar/ngs_assigment/gtf-compare/bwa_gtf_compar/bwa_gtf_compar${r} /home/manar/ngs_assigment/bwa_aligment_assembly/bwa_aligment_assembly${r}.gtf
+done
+'''
