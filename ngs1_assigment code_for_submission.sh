@@ -150,5 +150,16 @@ do
 done
 
 
+6- Assembly
+Prepare the SAM file for assembly
+conda install samtools
 
+Convert the SAM file into BAM file 
 
+for r in 1 2 3 4 5
+do
+samtools view -bS /home/manar/ngs_assigment/hisat_align/shuffeled_hisat_aligment${r}.sam > /home/manar/ngs_assigment/hisat_align/shuffeled_hisat_aligment${r}.bam
+samtools sort /home/manar/ngs_assigment/hisat_align/shuffeled_hisat_aligment${r}.bam -o /home/manar/ngs_assigment/hisat_align/shuffeled_hisat_aligment_sorted${r}.bam
+done
+
+Assembly for 5 samples shuffled.
