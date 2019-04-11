@@ -154,7 +154,15 @@ done
 Prepare the SAM file for assembly
 conda install samtools
 
-Convert the SAM file into BAM file 
+Convert the SAM files from bwa aligment into BAM file 
+
+for r in 1 2 3 4 5
+do
+samtools view -bS /home/manar/ngs_assigment/bwa_align/sample_part_00${r}.sam > /home/manar/ngs_assigment/bwa_align/sample_part_bwa_aligment00${r}.bam
+samtools sort /home/manar/ngs_assigment/bwa_align/sample_part_bwa_aligment00${r}.bam -o /home/manar/ngs_assigment/bwa_align/sample_part_bwa_aligment_sorted${r}.bam
+done
+
+Convert the SAM files from Haisat aligment into BAM file 
 
 for r in 1 2 3 4 5
 do
