@@ -1,23 +1,32 @@
+I tried to do the assigment by 1M at first but my lab crashed and Dr.Tamer mentioned that we can sub-sample the data to 500K reads instead of 5M reads, but please notice that submitting the project with the sub-sample will deduct 10% from the total grade.
+Therefore I preffred to work with subsample and make all commands rather than do 1M and can't complete the assigment tell tha end.
+All commands works well but at the Quantification step all counts were 0.
 
-1- extract fastq from sra data 
+1A)- Data Download
 '''
+wget -c ftp://ftp-trace.ncbi.nih.gov/sra/sra-instant/reads/ByRun/sra/SRR/SRR879/SRR8797509/SRR8797509.sra
+'''
+
+1B)- extract fastq from sra data 
+'''
+source activate ngs1
 fastq-dump --outdir . --gzip --split-files SRR8797509.sra
 '''
 
 
 2- Prepare the data
 '''
-source activate ngs1
+conda install -c bioconda seqkit
 zcat SRR8797509_1.fastq.gz | seqkit sample -p 0.02 -o sample_r1.fastq.gz
 zcat SRR8797509_2.fastq.gz | seqkit sample -p 0.02 -o sample_r2.fastq.gz
 '''
 
-2b)Split sequences into 50 parts
+2b)Split sequences into 5 parts
 '''
 seqkit split sample_r1.fastq.gz -p 5
 seqkit split sample_r2.fastq.gz -p 5
 '''
-2c)- shufle data and make 100000 shuffled reads 
+2c)- shufle data and make 100,000 shuffled reads 
 '''
 seqkit shuffle sample_r1.fastq.gz > shuffled_sample_r1.fastq.gz
 seqkit shuffle sample_r2.fastq.gz > shuffled_sample_r2.fastq.gz
@@ -34,7 +43,6 @@ For Sample 1 only, use FASTQC to report the difference between S1_1 and S1_2
 3a) Install the software
 
 '''
-source activate ngs1
 conda install -c bioconda fastqc
 '''
 
@@ -49,13 +57,21 @@ for f in ~/ngs_assigment/FASTQC_sample1_2/*.fastq.gz;do fastqc -t 1 -f fastq -no
 
 
 4- Trimming
-Mild Trimming for SX_1. {unshuffled}
+4A)- Mild Trimming for SX_1. {unshuffled}
 '''
 mkdir ~/ngs_assigment/trimmed && cd ~/ngs_assigment/trimmed 
-for r in 1 2 3 4 5;do >f1="/home/manar/ngs_assigment/sample_r1.fastq.gz.split/sample_r1.part_00${r}.fastq.gz"; >f2="/home/manar/ngs_assigment/sample_r2.fastq.gz.split/sample_r2.part_00${r}.fastq.gz"; >newf1="/home/manar/ngs_assigment/sample_r1.fastq.gz.split/sample_r1.part_00${r}.pe.trim.fastq.gz"; >newf2="/home/manar/ngs_assigment/sample_r2.fastq.gz.split/sample_r2.part_00${r}.pe.trim.fastq.gz"; >newf1U="/home/manar/ngs_assigment/sample_r1.fastq.gz.split/sample_r1.part_00${r}.se.trim.fastq.gz"; >newf2U="/home/manar/ngs_assigment/sample_r2.fastq.gz.split/sample_r2.part_00${r}.se.trim.fastq.gz"; >adap="/home/manar/anaconda3/envs/ngs1/share/trimmomatic-0.39-0/adapters"; trimmomatic PE -threads 1 -phred33 -trimlog trimLogFile -summary statsSummaryFile  $f1 $f2 $newf1 $newf1U $newf2 $newf2U ILLUMINACLIP:$adap/TruSeq3-PE.fa:2:30:10:1 SLIDINGWINDOW:4:10 MINLEN:36;done
-
-Agrissive Trimming for SX_2. {shuffled}
-
+for r in 1 2 3 4 5;do >f1="/home/manar/ngs_assigment/sample_r1.fastq.gz.split/sample_r1.part_00${r}.fastq.gz";
+>f2="/home/manar/ngs_assigment/sample_r2.fastq.gz.split/sample_r2.part_00${r}.fastq.gz";
+>newf1="/home/manar/ngs_assigment/sample_r1.fastq.gz.split/sample_r1.part_00${r}.pe.trim.fastq.gz"; 
+>newf2="/home/manar/ngs_assigment/sample_r2.fastq.gz.split/sample_r2.part_00${r}.pe.trim.fastq.gz"; 
+>newf1U="/home/manar/ngs_assigment/sample_r1.fastq.gz.split/sample_r1.part_00${r}.se.trim.fastq.gz";
+>newf2U="/home/manar/ngs_assigment/sample_r2.fastq.gz.split/sample_r2.part_00${r}.se.trim.fastq.gz";
+>adap="/home/manar/anaconda3/envs/ngs1/share/trimmomatic-0.39-0/adapters"; 
+trimmomatic PE -threads 1 -phred33 -trimlog trimLogFile -summary statsSummaryFile  $f1 $f2 $newf1 $newf1U $newf2 $newf2U ILLUMINACLIP:$adap/TruSeq3-PE.fa:2:30:10:1 SLIDINGWINDOW:4:10 MINLEN:36;
+done
+'''
+4B)- Agrissive Trimming for SX_2. {shuffled}
+'''
 mkdir ~/ngs_assigment/shuffled_trimmed && cd ~/ngs_assigment/shuffled_trimmed 
 for r in 1 2 3 4 5;do 
 f1="/home/manar/ngs_assigment/shuffled_sample_r1.fastq.gz.split/shuffled_sample_r1.part_00${r}.fastq.gz"; 
@@ -68,8 +84,9 @@ adap="/home/manar/anaconda3/envs/ngs1/share/trimmomatic-0.39-0/adapters";
 trimmomatic PE -threads 1 -phred33 -trimlog trimLogFile -summary statsSummaryFile  $f1 $f2 $newf1 $newf1U $newf2 $newf2U ILLUMINACLIP:$adap/TruSeq3-PE.fa:2:30:10:1 SLIDINGWINDOW:4:30 MINLEN:36;
 done
 '''
-5- Alignment by BWA for unshuffled data
-5a): Download reference
+5A)- Alignment by BWA for unshuffled data
+ 
+Download reference
 '''
 mkdir ~/ngs_assigment/sample_data && cd ~/ngs_assigment/sample_data
 wget -c ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_29/gencode.v29.pc_transcripts.fa.gz
@@ -79,7 +96,7 @@ wget -c ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_29/genco
 gunzip gencode.v29.annotation.gtf.gz
 
 
-cd ~/workdir/sample_data/
+cd ~/ngs_assigment/sample_data/
 READS=$(grep "^chr22" gencode.v29.annotation.gtf | awk -F'\t' '{print $9}' | awk -F';' '{print $1}' | awk -F' ' '{print $2}' | awk -F'"' '{print $2}' | sort | uniq)
 
 for value in $READS
@@ -90,14 +107,13 @@ for value in $READS
 '''
 
 
-5B) install bwa
+install bwa
 
 '''
-source activate ngs1
 conda install -c bioconda bwa 
 '''
 
-5C) index your genome
+index your genome
 
 '''
 mkdir -p ~/ngs_assigment/bwa_align/bwaIndex && cd ~/ngs_assigment/bwa_align/bwaIndex
@@ -105,7 +121,7 @@ ln -s ~/ngs_assigment/sample_data/gencode.v29.pc_transcripts.chr22.simplified.fa
 bwa index -a bwtsw gencode.v29.pc_transcripts.chr22.simplified.fa
 '''
 
-5D) sequence alignment
+sequence alignment
 '''
 cd ~/ngs_assigment/bwa_align/
 
@@ -123,14 +139,14 @@ do
 done
 '''
 
-6) HISAT allignment 
+5B) HISAT allignment 
 
-6A) installhisat2
+installhisat2
 '''
 conda install -c bioconda hisat2 
 '''
 
-6B) index your genome
+index your genome
 '''
 mkdir -p ~/ngs_assigment/hisat_align/hisatIndex && cd ~/ngs_assigment/hisat_align/hisatIndex
 ln -s ~/ngs_assigment/sample_data/gencode.v29.pc_transcripts.chr22.simplified.fa .
@@ -141,7 +157,7 @@ hisat2_extract_exons.py ~/ngs_assigment/sample_data/gencode.v29.annotation.gtf >
 hisat2-build -p 1 --ss splicesites.tsv --exon exons.tsv gencode.v29.pc_transcripts.chr22.simplified.fa gencode.v29.pc_transcripts.chr22.simplified_indexed
 '''
 
-6C) sequence alignment
+sequence alignment
 '''
 cd ~/ngs_assigment/hisat_align
 
@@ -159,7 +175,7 @@ done
 '''
 
 6- Assembly
-Prepare the SAM file for assembly
+6A)- Prepare the SAM file for assembly
 '''
 conda install samtools
 '''
@@ -182,7 +198,7 @@ done
 '''
 
 
-Assembly for 5 samples shuffled.
+6B)- Assembly  using stringTie. 
 
 assembly for bwa alignment  
 '''
@@ -203,8 +219,8 @@ do
 stringtie /home/manar/ngs_assigment/hisat_align/shuffeled_hisat_aligment_sorted${r}.bam --rf -l hisat_aligment_assembly -G /home/manar/ngs_assigment/sample_data/gencode.v29.annotation.gtf -o /home/manar/ngs_assigment/hisat_aligment_assembly/hisat_aligment_assembly${r}.gtf 
 done
 '''
-
-gff compare hisat
+7- Using GTF-Compare to Compare the Generated Annotation Files to a Reference Annotation.
+7A)- GFF compare hisat
 '''
 for r in 1 2 3 4 5
 do
@@ -212,7 +228,7 @@ do
 done
 '''
 
-gff compare bwa aligment
+7B)- GFF compare bwa aligment
 '''
 mkdir bwa_gtf_compar
 
