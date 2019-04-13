@@ -1,0 +1,29 @@
+# gffcompare v0.10.6 | Command line was:
+#gffcompare -r /home/manar/ngs_assigment/sample_data/gencode.v29.annotation.gtf -o /home/manar/ngs_assigment/gtf-compare/bwa_gtf_compar/bwa_gtf_compar1 /home/manar/ngs_assigment/bwa_aligment_assembly/bwa_aligment_assembly1.gtf
+#
+
+#= Summary for dataset: /home/manar/ngs_assigment/bwa_aligment_assembly/bwa_aligment_assembly1.gtf 
+#     Query mRNAs :     137 in     137 loci  (0 multi-exon transcripts)
+#            (0 multi-transcript loci, ~1.0 transcripts per locus)
+# Reference mRNAs :  205017 in   54974 loci  (180079 multi-exon)
+# Super-loci w/ reference transcripts:        0
+#-----------------| Sensitivity | Precision  |
+        Base level:     0.0     |     0.0    |
+        Exon level:     0.0     |     0.0    |
+      Intron level:     0.0     |    -nan    |
+Intron chain level:     0.0     |    -nan    |
+  Transcript level:     0.0     |     0.0    |
+       Locus level:     0.0     |     0.0    |
+
+     Matching intron chains:       0
+       Matching transcripts:       0
+              Matching loci:       0
+
+          Missed exons:  588357/588357	(100.0%)
+           Novel exons:     137/137	(100.0%)
+        Missed introns:  360722/360722	(100.0%)
+           Missed loci:   54974/54974	(100.0%)
+            Novel loci:     137/137	(100.0%)
+
+ Total union super-loci across all input datasets: 137 
+137 out of 137 consensus transcripts written in /home/manar/ngs_assigment/gtf-compare/bwa_gtf_compar/bwa_gtf_compar1.annotated.gtf (0 discarded as redundant)
