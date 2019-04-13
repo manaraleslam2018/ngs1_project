@@ -135,7 +135,7 @@ for r in 1 2 3 4 5
 
 for r in 1 2 3 4 5
 do
-    samtools flagstat /home/manar/ngs_assigment/bwa_align/sample_part_00${r}.sam > sample_part_00${r}_stats.out
+    samtools flagstat /home/manar/ngs_assigment/bwa_align/sample_part_00${r}.sam > bwa_alignment_sample${r}_stats.out
 done
 '''
 
@@ -170,7 +170,7 @@ done
 
 for r in 1 2 3 4 5
 do
-    samtools flagstat /home/manar/ngs_assigment/hisat_align/shuffeled_hisat_aligment${r}.sam > sample_part_00${r}_stats.out
+    samtools flagstat /home/manar/ngs_assigment/hisat_align/shuffeled_hisat_aligment${r}.sam > haisat_alignment_sample${r}_stats.out
 done
 '''
 
