@@ -89,6 +89,7 @@ for value in $READS
     done
 '''
 
+
 5B) install bwa
 
 '''
@@ -180,6 +181,7 @@ samtools sort /home/manar/ngs_assigment/hisat_align/shuffeled_hisat_aligment${r}
 done
 '''
 
+
 Assembly for 5 samples shuffled.
 
 assembly for bwa alignment  
@@ -219,3 +221,23 @@ do
  gffcompare -r /home/manar/ngs_assigment/sample_data/gencode.v29.annotation.gtf -o /home/manar/ngs_assigment/gtf-compare/bwa_gtf_compar/bwa_gtf_compar${r} /home/manar/ngs_assigment/bwa_aligment_assembly/bwa_aligment_assembly${r}.gtf
 done
 '''
+
+8- Apply Differential Expression.
+
+'''
+mkdir -p ~/ngs_assigment/diff_exp && cd ~/ngs_assigment/diff_exp/
+
+featureCounts -a /home/manar/ngs_assigment/sample_data/gencode.v29.annotation.gtf -g gene_name -o counts.txt /home/manar/ngs_assigment/bwa_align/sample_part_bwa_aligment_sorted*.bam /home/manar/ngs_assigment/hisat_align/shuffeled_hisat_aligment_sorted*.bam
+
+cat counts.txt | cut -f 1,7-16 > simple_counts.txt
+'''
+
+The next step give me error that I have searched for with Eng.Abdelrahman and found the reason is that as all counts in simple counts.txt = 0.  
+
+
+'''
+cat simple_counts.txt | Rscript deseq1.r 5x5 > results_deseq1.tsv
+cat results_deseq1.tsv | awk ' $8 < 0.05 { print $0 }' > filtered_results_deseq1.tsv
+cat filtered_results_deseq1.tsv | Rscript draw-heatmap.r > final_output.pdf
+'''
+
