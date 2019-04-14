@@ -4,7 +4,7 @@ All commands works well but at the Quantification step all counts were 0.
 
 1A)- Data Download
 '''
- mkdir ~/ngs_assigment/ && cd ngs_assigment
+ mkdir ~/ngs_assigment/ && cd ~/ngs_assigment/
 wget -c ftp://ftp-trace.ncbi.nih.gov/sra/sra-instant/reads/ByRun/sra/SRR/SRR879/SRR8797509/SRR8797509.sra
 '''
 
