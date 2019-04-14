@@ -257,4 +257,3 @@ cat simple_counts.txt | Rscript deseq1.r 5x5 > results_deseq1.tsv
 cat results_deseq1.tsv | awk ' $8 < 0.05 { print $0 }' > filtered_results_deseq1.tsv
 cat filtered_results_deseq1.tsv | Rscript draw-heatmap.r > final_output.pdf
 '''
-
