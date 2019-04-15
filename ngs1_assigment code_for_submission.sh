@@ -1,6 +1,8 @@
 I tried to do the assigment by 1M at first but my lab crashed and Dr.Tamer mentioned that we can sub-sample the data to 500K reads instead of 5M reads, but please notice that submitting the project with the sub-sample will deduct 10% from the total grade.
 Therefore I preffred to work with subsample and make all commands rather than do 1M and can't complete the assigment tell tha end.
 All commands works well but at the Quantification step all counts were 0.
+I tried another time today (15-4) to work with 1M  but failed unfortianatly I'm so sorry for this but my lab with low qualification. I hope to accept my apologise and know your feedback an if there are mistakes that I can avoid in the future isa.
+Thank you so much for giving us option to work with low number of reads.
 
 1A)- Data Download
 '''
